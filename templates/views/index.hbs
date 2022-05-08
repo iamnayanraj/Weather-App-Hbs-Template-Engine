@@ -23,13 +23,14 @@
     </style>
   </head>
   <body>
+    {{>header}}
     <div class="parent">
       <div class="card" style="width: 18rem">
         <img src="./images/cloudy.jpg" class="card-img-top" alt="sunny" />
         <div class="card-body text-center">
           <h5 class="card-title">{{temprature}}</h5>
           <p class="card-text">{{cityname}} {{countryname}}</p>
-          <form id="locForm">
+          <form action="/" method="post" id="locForm">
             <div class="input-group mb-3">
               <input
                 type="text"
