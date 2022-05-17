@@ -23,12 +23,12 @@
     </style>
   </head>
   <body>
-    {{>header}}
     <div class="parent">
       <div class="card" style="width: 18rem">
-        <img src="./images/cloudy.jpg" class="card-img-top" alt="sunny" />
+        <img src="./images/default.jpg" class="card-img-top" alt="sunny" />
         <div class="card-body text-center">
           <h5 class="card-title">{{temprature}}</h5>
+          <p class="card-text">{{description}}</p>
           <p class="card-text">{{cityname}} {{countryname}}</p>
           <form action="/" method="post" id="locForm">
             <div class="input-group mb-3">

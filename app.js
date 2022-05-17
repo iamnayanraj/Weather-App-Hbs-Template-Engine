@@ -2,35 +2,13 @@ const express = require("express");
 const app = express();
 const path = require("path");
 const http = require("http");
-const hbs = require("hbs");
 const bodyParser = require("body-parser");
 
-const staticPath = path.join(".//public", "//client");
+const staticPath = path.join(__dirname, "public");
 
-const fs = require("fs"); // this engine requires the fs module
-app.engine("ntl", (filePath, options, callback) => {
-  console.log(filePath);
-  // define the template engine
-  fs.readFile(filePath, (err, content) => {
-    if (err) return callback(err);
-    // this is an extremely simple template engine
-    const rendered = content
-      .toString()
-      .replace("{{temprature}}", `<p>${options.temprature}</p>`)
-      .replace("{{cityname}}", `<p>${options.cityname}</p>`)
-      .replace("{{countryname}}", `<p>${options.countryname}</p>`);
-    return callback(null, rendered);
-  });
-});
-//app.set("view engine", "ntl"); // register the template engine
-//console.log(staticPath);
-
-const viewPath = path.join(__dirname, "templates", "views");
-const partialPath = path.join(__dirname, "templates", "partials");
-// console.log(viewPath);
+const viewPath = path.join(__dirname, "views");
 app.set("views", viewPath);
 app.use(express.static(staticPath));
-hbs.registerPartials(partialPath);
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -41,16 +19,8 @@ app.get("/", (req, res) => {
     countryname: "",
   });
 });
-// app.get("/", (req, res) => {
-//   res.render("index.hbs", {
-//     temprature: "20.5",
-//     cityname: "kolkata",
-//     countryname: "India",
-//   });
-// });
 
 app.post("/", (req, res) => {
-  //res.send("hello");
   const city = req.body.city;
   const url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=539cd4b086fa9e5546734c2b96c3173c`;
   let data = "";
@@ -72,14 +42,13 @@ app.post("/", (req, res) => {
             temprature: (data.main.temp - 273.5).toFixed(2),
             cityname: data.name,
             countryname: data.sys.country,
-            // description: data.weather[0].main,
+            description: data.weather[0].main,
           };
-          // res.redirect(`/${JSON.stringify(tempData)}`);
           res.render("index.hbs", {
             temprature: (data.main.temp - 273.5).toFixed(2),
             cityname: data.name,
             countryname: data.sys.country,
-            // description: data.weather[0].main,
+            description: data.weather[0].main,
           });
         }
       });
@@ -89,38 +58,12 @@ app.post("/", (req, res) => {
     });
 });
 
-app.get("/about", (req, res) => {
-  console.log(req.query);
-  res.send("about");
-});
-
-app.get("/test", (req, res) => {
-  res.send("<h1>Test page</h1>");
-});
-
-app.get("/api", (req, res) => {
-  res.json([
-    {
-      id: 1,
-      name: "nayan",
-    },
-    {
-      id: 1,
-      name: "nayan",
-    },
-  ]);
-});
-
 app.get("*", (req, res) => {
   res.render("404.hbs", {
     message: "Page not found",
   });
 });
 
-app.listen(8500, () => {
+app.listen(8000, () => {
   console.log(`app reunning on port ${8000}`);
 });
-
-
-
-
