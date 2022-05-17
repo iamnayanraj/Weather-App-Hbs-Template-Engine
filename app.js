@@ -90,6 +90,7 @@ app.post("/", (req, res) => {
 });
 
 app.get("/about", (req, res) => {
+  console.log(req.query);
   res.send("about");
 });
 
@@ -119,3 +120,7 @@ app.get("*", (req, res) => {
 app.listen(8500, () => {
   console.log(`app reunning on port ${8000}`);
 });
+
+
+
+
